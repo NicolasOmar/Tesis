@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "Equipos | Consultar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var UsuarioLog = Session["UsuarioLog"] as TesisCon2013.Models.Usuarios;
+    var EquipoMod = Session["EquipoMod"] as TesisCon2013.Models.Equipos;
+    var mensaje = TempData["mensaje"] as string;
+}
+
+@if (mensaje != null)
+{<div id="msj">@mensaje</div>}
+
+@if (UsuarioLog != null && UsuarioLog.idRol > 1)
+{
+    <div class="container center_div">
+    
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+                <div class="btn-group botonera">
+                    @if (UsuarioLog.idRol == 2)
+                    {<button type="button" onclick="location.href='@Url.Action("ModificarEquipo")'" class="btn btn-warning" title="Modificar Datos del Equipo"><span class="glyphicon glyphicon-pencil"></span> Modificar</button>}
+                        
+                    <button type="button" onclick="location.href='@Url.Action("ListaEquipos")'" class="btn btn-info" title="Volver al listado de Equipos"><span class="glyphicon glyphicon-repeat"></span> Volver</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <form class="form-horizontal" role="form">
+                <fieldset>
+                    <legend class="col-md-6 col-md-offset-3">Datos del Equipo N° @EquipoMod.idEquipo</legend>
+                        
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                            <span class="base">Tipo|Marca:</span>
+                            <span class="contenido"> @EquipoMod.TipoMarca.Tipos.tipo @EquipoMod.TipoMarca.Marcas.marca</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                            <span class="base">Modelo:</span>
+                            <span class="contenido"> @EquipoMod.modelo</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                            <span class="base">N° Serie:</span>
+                            <span class="contenido"> @EquipoMod.numSerie</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                            <span class="base">Cliente:</span>
+                            <span class="contenido"> @EquipoMod.Clientes.apeClie, @EquipoMod.Clientes.nomClie</span>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+}
+else
+{ Response.Redirect(Url.Action("Index", "Home")); }
+

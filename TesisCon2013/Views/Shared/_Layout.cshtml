@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/jquery-ui.css")
+    @Styles.Render("~/Content/jquery-ui.theme.css")
+    @Styles.Render("~/Content/jquery-ui.structure.css")
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/Scripts/jquery-1.11.1.js")
+    @Scripts.Render("~/Scripts/jquery-ui.js")
+    @Scripts.Render("~/Scripts/logica.js")    
+</head>
+<body>
+    @{var UsuarioLog = Session["UsuarioLog"] as TesisCon2013.Models.Usuarios;}
+
+    @if (UsuarioLog != null)
+    {
+        <div class="row">
+            <div id="divSesion" class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                Bienvenido/a @UsuarioLog.Roles.rol @UsuarioLog.nomUsu
+                <button type="button" class="btn btn-danger" onclick="location.href='@Url.Action("CerrarSesion", "Usuario")'"><span class="glyphicon glyphicon-off"></span> Cerrar Sesion</button>
+            </div>
+        </div>
+
+        <ul id="divTabs" class="nav nav-tabs">
+            @if (UsuarioLog.idRol > 1)
+            {
+                <li><a href="@Url.Action("Index", "Orden")"><span class="glyphicon glyphicon-list-alt"></span> Ordenes</a></li>
+
+                if (UsuarioLog.idRol == 2)
+                {
+                    <li><a href="@Url.Action("Index", "Equipo")"><span class="glyphicon glyphicon-phone"></span> Equipos</a></li>
+                    <li><a href="@Url.Action("Index", "Cliente")"><span class="glyphicon glyphicon-user"></span> Clientes</a></li>
+                }
+
+                <li><a href="@Url.Action("Index", "Usuario")"><span class="glyphicon glyphicon-wrench"></span> Administracion</a></li>
+            }
+        </ul>
+    }
+    @RenderBody()
+</body>
+</html>

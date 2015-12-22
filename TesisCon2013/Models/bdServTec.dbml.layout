@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.75, 8.5" name="bdServTec">
+  <DataContextMoniker Name="/bdServTecDataContext" />
+  <nestedChildShapes>
+    <classShape Id="58167bc5-5cd7-40dc-85da-94940e2d3dc0" absoluteBounds="3.25, 6.125, 2, 1.1939925130208333">
+      <DataClassMoniker Name="/bdServTecDataContext/Barrios" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c9aec67c-7519-482f-bd80-e958c5d2b915" absoluteBounds="3.2650000000000006, 6.585, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ae0a52f4-7147-4b27-8c31-8003e40a783a" absoluteBounds="0.5, 4.25, 2, 1.9631982421875">
+      <DataClassMoniker Name="/bdServTecDataContext/Clientes" />
+      <nestedChildShapes>
+        <elementListCompartment Id="62c3c992-a456-417e-869b-32408afb07bd" absoluteBounds="0.51499999999999968, 4.71, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(3.25 : 6.76609587760417); (1.5 : 6.76609587760417); (1.5 : 6.2131982421875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/bdServTecDataContext/Barrios/Barrios_Clientes" />
+      <nodes>
+        <classShapeMoniker Id="58167bc5-5cd7-40dc-85da-94940e2d3dc0" />
+        <classShapeMoniker Id="ae0a52f4-7147-4b27-8c31-8003e40a783a" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="2b066967-3eef-4124-b621-3e578e16b754" absoluteBounds="3.125, 2.625, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/bdServTecDataContext/Equipos" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5c75d0fe-c8cd-4e2c-924b-e35dc62af51e" absoluteBounds="3.1400000000000006, 3.085, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(1.5 : 4.25); (1.5 : 3.51044840494792); (3.125 : 3.51044840494792)]" fixedFrom="Algorithm" fixedTo="NotFixed">
+      <AssociationMoniker Name="/bdServTecDataContext/Clientes/Clientes_Equipos" />
+      <nodes>
+        <classShapeMoniker Id="ae0a52f4-7147-4b27-8c31-8003e40a783a" />
+        <classShapeMoniker Id="2b066967-3eef-4124-b621-3e578e16b754" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="372f887b-242c-4c0f-a3e3-9b6aca44e6bd" absoluteBounds="5.75, 4.75, 2, 1.1939925130208333">
+      <DataClassMoniker Name="/bdServTecDataContext/Estados" />
+      <nestedChildShapes>
+        <elementListCompartment Id="898f1569-ba8e-45d5-80da-65eced18e0bf" absoluteBounds="5.765, 5.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="deeda1c3-9539-4fdc-be92-2a47c0e74a8e" absoluteBounds="0.5, 1.875, 2, 1.1939925130208333">
+      <DataClassMoniker Name="/bdServTecDataContext/Marcas" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2cf59bff-aee1-40b2-9a98-af3c29beedb2" absoluteBounds="0.51500000000000012, 2.335, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4e4adda8-e4e0-45a5-a98d-ea1575f66ca0" absoluteBounds="5.75, 1.5, 2, 2.5401025390625">
+      <DataClassMoniker Name="/bdServTecDataContext/Ordenes" />
+      <nestedChildShapes>
+        <elementListCompartment Id="61c1957a-0310-4c52-8023-43563372ffb8" absoluteBounds="5.765, 1.96, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.125 : 3.33255126953125); (5.75 : 3.33255126953125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/bdServTecDataContext/Equipos/Equipos_Ordenes" />
+      <nodes>
+        <classShapeMoniker Id="2b066967-3eef-4124-b621-3e578e16b754" />
+        <classShapeMoniker Id="4e4adda8-e4e0-45a5-a98d-ea1575f66ca0" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(6.75 : 4.75); (6.75 : 4.0401025390625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/bdServTecDataContext/Estados/Estados_Ordenes" />
+      <nodes>
+        <classShapeMoniker Id="372f887b-242c-4c0f-a3e3-9b6aca44e6bd" />
+        <classShapeMoniker Id="4e4adda8-e4e0-45a5-a98d-ea1575f66ca0" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="6c718dba-3393-4d0a-aea8-6c7335d3b15d" absoluteBounds="9.5, 6.25, 2, 1.1939925130208333">
+      <DataClassMoniker Name="/bdServTecDataContext/Roles" />
+      <nestedChildShapes>
+        <elementListCompartment Id="41376451-8f24-4567-bac7-1de733b59b2e" absoluteBounds="9.515, 6.71, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="2d0ba4d9-7b35-412e-a587-0fba2b206627" absoluteBounds="8.875, 0.875, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/bdServTecDataContext/Tareas" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4575bb59-a2b3-4294-91d6-dfece50ea73d" absoluteBounds="8.89, 1.335, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(7.75 : 2.07294840494792); (8.875 : 2.07294840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/bdServTecDataContext/Ordenes/Ordenes_Tareas" />
+      <nodes>
+        <classShapeMoniker Id="4e4adda8-e4e0-45a5-a98d-ea1575f66ca0" />
+        <classShapeMoniker Id="2d0ba4d9-7b35-412e-a587-0fba2b206627" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="ff4e7d76-6cd8-4a16-b4c2-057f6fc12db8" absoluteBounds="3.125, 0.75, 2, 1.3862939453125">
+      <DataClassMoniker Name="/bdServTecDataContext/TipoMarca" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e5f6d9bc-fac9-4ab3-82a9-ffd2bcc3b5d7" absoluteBounds="3.1399999999999997, 1.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(4.125 : 2.1362939453125); (4.125 : 2.625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/bdServTecDataContext/TipoMarca/TipoMarca_Equipos" />
+      <nodes>
+        <classShapeMoniker Id="ff4e7d76-6cd8-4a16-b4c2-057f6fc12db8" />
+        <classShapeMoniker Id="2b066967-3eef-4124-b621-3e578e16b754" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.5 : 2.00564697265625); (3.125 : 2.00564697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/bdServTecDataContext/Marcas/Marcas_TipoMarca" />
+      <nodes>
+        <classShapeMoniker Id="deeda1c3-9539-4fdc-be92-2a47c0e74a8e" />
+        <classShapeMoniker Id="ff4e7d76-6cd8-4a16-b4c2-057f6fc12db8" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="34c12f8b-8c06-4030-9fab-8f010d02e52f" absoluteBounds="0.5, 0.5, 2, 1.1939925130208333">
+      <DataClassMoniker Name="/bdServTecDataContext/Tipos" />
+      <nestedChildShapes>
+        <elementListCompartment Id="77afbde3-9c21-473b-b145-6bea93b921fd" absoluteBounds="0.51500000000000012, 0.96, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.5 : 1.22199625651042); (3.125 : 1.22199625651042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/bdServTecDataContext/Tipos/Tipos_TipoMarca" />
+      <nodes>
+        <classShapeMoniker Id="34c12f8b-8c06-4030-9fab-8f010d02e52f" />
+        <classShapeMoniker Id="ff4e7d76-6cd8-4a16-b4c2-057f6fc12db8" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="ce2b5680-4382-450b-8eb5-c87d2b2b7995" absoluteBounds="9.125, 3.25, 2, 2.5401025390625">
+      <DataClassMoniker Name="/bdServTecDataContext/Usuarios" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6f1a4b9f-66cc-43ff-99e9-11d91774dec4" absoluteBounds="9.14, 3.71, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(10 : 3.25); (10 : 2.64589680989583)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/bdServTecDataContext/Usuarios/Usuarios_Tareas" />
+      <nodes>
+        <classShapeMoniker Id="ce2b5680-4382-450b-8eb5-c87d2b2b7995" />
+        <classShapeMoniker Id="2d0ba4d9-7b35-412e-a587-0fba2b206627" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.25 : 6.15625); (9.28125 : 6.15625); (9.28125 : 5.7901025390625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/bdServTecDataContext/Barrios/Barrios_Usuarios" />
+      <nodes>
+        <classShapeMoniker Id="58167bc5-5cd7-40dc-85da-94940e2d3dc0" />
+        <classShapeMoniker Id="ce2b5680-4382-450b-8eb5-c87d2b2b7995" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(10.3125 : 6.25); (10.3125 : 5.7901025390625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/bdServTecDataContext/Roles/Roles_Usuarios" />
+      <nodes>
+        <classShapeMoniker Id="6c718dba-3393-4d0a-aea8-6c7335d3b15d" />
+        <classShapeMoniker Id="ce2b5680-4382-450b-8eb5-c87d2b2b7995" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

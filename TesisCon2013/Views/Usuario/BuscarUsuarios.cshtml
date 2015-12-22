@@ -1,0 +1,112 @@
+﻿@{
+    ViewBag.Title = "Administracion | Busqueda de Usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var UsuarioLog = Session["UsuarioLog"] as TesisCon2013.Models.Usuarios;
+    var lstBarrios = Session["lstBarrios"] as List<TesisCon2013.Models.Barrios>;
+    var lstRoles = Session["lstRoles"] as List<TesisCon2013.Models.Roles>;
+    var mensaje = TempData["mensaje"] as string;
+}
+
+@if (mensaje != null)
+{<div id="msj">@mensaje</div>}
+                             
+@if (UsuarioLog != null && UsuarioLog.idRol < 3)
+{
+    <div class="container center_div">
+        <div class="row">
+            <form action="@Url.Action("FiltrarUsuarios")" method="get" class="form-horizontal" role="form">
+                <fieldset>
+                    <legend class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">Buscar Usuario por:</legend>
+                    
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-italic"></span> Nombre
+                            </div>
+                            <input type="text" name="txtNom" class="form-control letras" maxlength="40" autofocus="true" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-home"></span> Direccion
+                            </div>
+                            <input type="text" name="txtDire" class="form-control" maxlength="40" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-map-marker"></span> Barrio
+                            </div>
+                            <select name="idBarrio" class="form-control">
+                                <option value="0"></option>
+                                @foreach (var barrio in lstBarrios)
+                                {<option value="@barrio.idBarrio"> @barrio.barrio</option>}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-earphone"></span> Telefono
+                            </div>
+                            <input type="tel" maxlength="20" name="txtTel" class="form-control numerico" />            
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-italic"></span> Usuario
+                            </div>
+                            <input type="text" name="txtUsu" class="form-control letras" maxlength="10" autofocus="true" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-user"></span> Rol
+                            </div>
+                            <select name="idRol" class="form-control">
+                                <option value="0"></option>
+                                @foreach (var rol in lstRoles)
+                                {<option value="@rol.idRol" >@rol.rol</option>}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-link"></span> Estado
+                            </div>
+                            <select name="idEstado" class="form-control">
+                                <option value="0"></option>
+                                <option value="1">Habilitado</option>
+                                <option value="2">Bloqueado</option>
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="col-md-4 col-md-offset-4 botonera">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> Buscar</button>
+                        @if (UsuarioLog.idRol == 1)
+                        {<button type="button" onclick="location.href='@Url.Action("RegistrarUsuario", "Usuario")'" class="btn btn-success" title="Registrar un nuevo Usuario"><span class="glyphicon glyphicon-plus"></span> Usuario</button>}
+                        <button type="button" onclick="location.href='@Url.Action("Index")'" class="btn btn-info" title="Volver al Area de Administracion"><span class="glyphicon glyphicon-repeat"></span> Volver</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+}
+else
+{ Response.Redirect(Url.Action("Index", "Home")); }

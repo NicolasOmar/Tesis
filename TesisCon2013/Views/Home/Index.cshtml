@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var usuarioLog = Session["usuarioLog"] as TesisCon2013.Models.Usuarios;
+    var mensaje = TempData["mensaje"] as string;
+}
+
+@if (mensaje != null)
+{ <div id="msj">@mensaje</div> }
+
+@if (usuarioLog == null)
+{
+    <div class="container-fluid center_div">
+        <div class="row" id="frmInicio">
+            <form action="@Url.Action("IniciarSesion", "Usuario")" method="post" class="form-horizontal" role="form">
+                <fieldset>
+
+                    <div class="row">
+                        <legend class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">Sistema Gestor de Servicio Tecnico | Inicio de Sesion</legend>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4 col-lg-2 col-lg-offset-5 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-user"></span> Usuario
+                            </div>
+                            <input type="text" name="nombre" class="form-control letras" maxlength="10" required="required" autofocus />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4 col-lg-2 col-lg-offset-5 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-lock"></span> Pass
+                            </div>
+                            <input type="password" name="pass" class="form-control" maxlength="10" required="required" />
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4 col-lg-2 col-lg-offset-5">
+                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Ingresar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{ Response.Redirect(Url.Action("Bienvenida", "Usuario")); }

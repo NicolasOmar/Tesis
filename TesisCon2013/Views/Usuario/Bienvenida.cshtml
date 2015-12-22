@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Inicio | Bienvenida";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var UsuarioLog = Session["UsuarioLog"] as TesisCon2013.Models.Usuarios;
+}
+
+@if (UsuarioLog != null && UsuarioLog.idRol > 1)
+{
+    <div id="bienvenida1">Bienvenido/a @UsuarioLog.Roles.rol</div>
+    <div id="bienvenida2">@UsuarioLog.nomUsu</div>
+    <div id="bienvenida3">
+        Para usar el sistema, seleccione cualquier de las
+        <br />opciones (botones) en la parte superior de la pantalla
+    </div>
+}          
+else
+    if (UsuarioLog.idRol == 1)
+    { Response.Redirect(Url.Action("Index", "Usuario")); }
+    else
+    { Response.Redirect(Url.Action("Index", "Home")); }

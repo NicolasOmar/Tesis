@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="servicioTecnico" Class="bdServTecDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=ALEXANDER\ADMIN;Initial Catalog=servicioTecnico;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="servicioTecnicoConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Barrios" Member="Barrios">
+    <Type Name="Barrios">
+      <Column Name="idBarrio" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="barrio" Type="System.String" DbType="NVarChar(30) NOT NULL" CanBeNull="false" />
+      <Association Name="Barrios_Clientes" Member="Clientes" ThisKey="idBarrio" OtherKey="idBarrio" Type="Clientes" />
+      <Association Name="Barrios_Usuarios" Member="Usuarios" ThisKey="idBarrio" OtherKey="idBarrio" Type="Usuarios" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Clientes" Member="Clientes">
+    <Type Name="Clientes">
+      <Column Name="idClie" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nomClie" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="apeClie" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="direClie" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
+      <Column Name="idBarrio" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="telClie" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Association Name="Clientes_Equipos" Member="Equipos" ThisKey="idClie" OtherKey="idClie" Type="Equipos" />
+      <Association Name="Barrios_Clientes" Member="Barrios" ThisKey="idBarrio" OtherKey="idBarrio" Type="Barrios" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Equipos" Member="Equipos">
+    <Type Name="Equipos">
+      <Column Name="idEquipo" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idTipoMarca" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="modelo" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="numSerie" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
+      <Column Name="idClie" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Association Name="Equipos_Ordenes" Member="Ordenes" ThisKey="idEquipo" OtherKey="idEquipo" Type="Ordenes" />
+      <Association Name="Clientes_Equipos" Member="Clientes" ThisKey="idClie" OtherKey="idClie" Type="Clientes" IsForeignKey="true" />
+      <Association Name="TipoMarca_Equipos" Member="TipoMarca" ThisKey="idTipoMarca" OtherKey="idTipoMarca" Type="TipoMarca" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Estados" Member="Estados">
+    <Type Name="Estados">
+      <Column Name="idEstado" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="estado" Type="System.String" DbType="NVarChar(14)" CanBeNull="true" />
+      <Association Name="Estados_Ordenes" Member="Ordenes" ThisKey="idEstado" OtherKey="idEstado" Type="Ordenes" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Marcas" Member="Marcas">
+    <Type Name="Marcas">
+      <Column Name="idMarca" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="marca" Type="System.String" DbType="NVarChar(15) NOT NULL" CanBeNull="false" />
+      <Association Name="Marcas_TipoMarca" Member="TipoMarca" ThisKey="idMarca" OtherKey="idMarca" Type="TipoMarca" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Ordenes" Member="Ordenes">
+    <Type Name="Ordenes">
+      <Column Name="idOrden" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idEquipo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="falla" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="observ" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="fecRecib" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="idEstado" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="aviso" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="fecAviso" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="fecEntrega" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Association Name="Ordenes_Tareas" Member="Tareas" ThisKey="idOrden" OtherKey="idOrden" Type="Tareas" />
+      <Association Name="Equipos_Ordenes" Member="Equipos" ThisKey="idEquipo" OtherKey="idEquipo" Type="Equipos" IsForeignKey="true" />
+      <Association Name="Estados_Ordenes" Member="Estados" ThisKey="idEstado" OtherKey="idEstado" Type="Estados" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Roles" Member="Roles">
+    <Type Name="Roles">
+      <Column Name="idRol" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="rol" Type="System.String" DbType="NVarChar(15) NOT NULL" CanBeNull="false" />
+      <Association Name="Roles_Usuarios" Member="Usuarios" ThisKey="idRol" OtherKey="idRol" Type="Usuarios" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Tareas" Member="Tareas">
+    <Type Name="Tareas">
+      <Column Name="idTarea" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idOrden" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="detalles" Type="System.String" DbType="NVarChar(300)" CanBeNull="true" />
+      <Column Name="fecTarea" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="idUsu" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Association Name="Ordenes_Tareas" Member="Ordenes" ThisKey="idOrden" OtherKey="idOrden" Type="Ordenes" IsForeignKey="true" />
+      <Association Name="Usuarios_Tareas" Member="Usuarios" ThisKey="idUsu" OtherKey="idUsu" Type="Usuarios" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TipoMarca" Member="TipoMarca">
+    <Type Name="TipoMarca">
+      <Column Name="idTipoMarca" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idTipo" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="idMarca" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Association Name="TipoMarca_Equipos" Member="Equipos" ThisKey="idTipoMarca" OtherKey="idTipoMarca" Type="Equipos" />
+      <Association Name="Marcas_TipoMarca" Member="Marcas" ThisKey="idMarca" OtherKey="idMarca" Type="Marcas" IsForeignKey="true" />
+      <Association Name="Tipos_TipoMarca" Member="Tipos" ThisKey="idTipo" OtherKey="idTipo" Type="Tipos" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Tipos" Member="Tipos">
+    <Type Name="Tipos">
+      <Column Name="idTipo" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="tipo" Type="System.String" DbType="NVarChar(15) NOT NULL" CanBeNull="false" />
+      <Association Name="Tipos_TipoMarca" Member="TipoMarca" ThisKey="idTipo" OtherKey="idTipo" Type="TipoMarca" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Usuarios" Member="Usuarios">
+    <Type Name="Usuarios">
+      <Column Name="idUsu" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nomUsu" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
+      <Column Name="direcUsu" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
+      <Column Name="idBarrio" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="telUsu" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="nomLog" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="passLog" Type="System.String" DbType="Char(10)" CanBeNull="true" />
+      <Column Name="idRol" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="habilitar" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Usuarios_Tareas" Member="Tareas" ThisKey="idUsu" OtherKey="idUsu" Type="Tareas" />
+      <Association Name="Barrios_Usuarios" Member="Barrios" ThisKey="idBarrio" OtherKey="idBarrio" Type="Barrios" IsForeignKey="true" />
+      <Association Name="Roles_Usuarios" Member="Roles" ThisKey="idRol" OtherKey="idRol" Type="Roles" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

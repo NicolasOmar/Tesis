@@ -1,0 +1,226 @@
+﻿@{
+    ViewBag.Title = "Ordenes | Consultar Orden";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var UsuarioLog = Session["UsuarioLog"] as TesisCon2013.Models.Usuarios;
+    var lsTareas = Session["lsTareas"] as List<TesisCon2013.Models.TareaModel>;
+    var OrdenMod = Session["OrdenMod"] as TesisCon2013.Models.Ordenes;
+    var canTareas = Session["canTareas"] as int?;
+    var mensaje = TempData["mensaje"] as string;
+}
+
+@if (mensaje != null)
+{<div id="msj">@mensaje</div>}
+
+@if (UsuarioLog != null && UsuarioLog.idRol > 1)
+{
+    <div class="container center_div">        
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+                @if (UsuarioLog.idRol > 1)
+                {
+                    <div class="btn-group botonera">
+                        @if (canTareas > 0 && UsuarioLog.idRol == 2)
+                        {<button type="button" id="btnImprimir" class="btn btn-primary" style="display:none"><span class="glyphicon glyphicon-print"></span> Imprimir</button>}
+
+                            @if (OrdenMod.idEstado == 1 && UsuarioLog.idRol == 2)
+                            {<button type="button" onclick="location.href='@Url.Action("ModificarOrden", new { ID = @OrdenMod.idOrden })'" class="btn btn-warning" title="Modificar datos de la Orden"><span class="glyphicon glyphicon-pencil"></span> Modificar</button>}
+                        
+                            <button type="button" id="btnOcultar" class="btn btn-info"><span class="glyphicon glyphicon-eye-close"></span> Ocular Trabajo/s</button>
+
+                            @if (OrdenMod.idEstado == 1 && UsuarioLog.idRol == 3)
+                            {<button type="button" id="btnTrabajo" onclick="location.href='@Url.Action("RegistrarTarea")'" class="btn btn-success" title="Registrar un Nuevo Trabajo"><span class="glyphicon glyphicon-plus"></span> Trabajo</button>}
+
+                            @if (canTareas > 0)
+                            {<button type="button" id="verTrabajos" class="btn btn-info" title="Ver el trabajo registrado"><span class="glyphicon glyphicon-search"></span> Ver Trabajo/s</button>}
+
+                            @if (OrdenMod.aviso == null || OrdenMod.fecEntrega == null)
+                            {
+                                if (OrdenMod.idEstado > 1 && !(bool)OrdenMod.aviso && UsuarioLog.idRol == 2)
+                                { <button type="button" onclick="location.href='@Url.Action("AvisarCliente", new { ID = @OrdenMod.idOrden })'" class="btn btn-success" title="Avisar al Cliente"><span class="glyphicon glyphicon-earphone"></span> Avisar al Cliente</button>}
+                                if ((bool)OrdenMod.aviso && OrdenMod.fecEntrega == null && UsuarioLog.idRol == 2)
+                                { <button type="button" onclick="location.href='@Url.Action("EntregarEquipo", new { ID = @OrdenMod.idOrden })'" class="btn btn-success" title="Entregar Equipo"> <span class="glyphicon glyphicon-gift"></span> Entregar Equipo</button>}
+                            } 
+                            <button type="button" onclick="location.href='@Url.Action("ListaOrdenes")'" class="btn btn-info" title="Volver al Listado de Ordenes"><span class="glyphicon glyphicon-repeat"></span> Volver</button>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="row">
+            <form id="ordenEntera" class="form-horizontal" role="form">
+                <fieldset>
+                    <legend class="col-md-6 col-md-offset-3">Orden de Trabajo N° @OrdenMod.idOrden</legend>
+
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                            <span class="base">Cliente:</span>
+                            <span class="contenido"> @OrdenMod.Equipos.Clientes.idClie - @OrdenMod.Equipos.Clientes.apeClie, @OrdenMod.Equipos.Clientes.nomClie</span>
+                        </div>
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                            <span class="base">Direccion:</span>
+                            <span class="contenido"> @OrdenMod.Equipos.Clientes.direClie - @OrdenMod.Equipos.Clientes.Barrios.barrio</span>
+                        </div>
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                            <span class="base">Telefono:</span>
+                            <span class="contenido"> @OrdenMod.Equipos.Clientes.telClie</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                            <span class="base">Equipo:</span>
+                            <span class="contenido"> @OrdenMod.Equipos.idEquipo - @OrdenMod.Equipos.TipoMarca.Tipos.tipo @OrdenMod.Equipos.TipoMarca.Marcas.marca</span>
+                        </div>
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                            <span class="base">Modelo:</span>
+                            <span class="contenido"> @OrdenMod.Equipos.modelo</span>
+                        </div>
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                            <span class="base">N° Serie:</span>
+                            <span class="contenido"> @OrdenMod.Equipos.numSerie</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                                <span class="base">Falla/s:</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 input-group">
+                                <textarea class="form-control" rows="4" cols="50" disabled>@OrdenMod.falla</textarea>    
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                                <span class="base">Obersvacion/es:</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 input-group">
+                                <textarea class="form-control" rows="4" cols="50" disabled>@OrdenMod.observ</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                            <span class="base">Fec. Recibido:</span>
+                            <span class="contenido"> @OrdenMod.fecRecib.Value.Day/@OrdenMod.fecRecib.Value.Month/@OrdenMod.fecRecib.Value.Year</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                            <span class="base">Estado:</span>
+                            <span class="contenido"> @OrdenMod.Estados.estado.ToUpper()</span>
+                        </div>
+                    </div>
+
+                    @if (OrdenMod.idEstado != 1)
+                    {
+                         <div class="form-group">
+                            @if (OrdenMod.aviso == true)
+                            { 
+                                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                                    <span class="base">Aviso al Cliente:</span>
+                                    <span class="contenido"> SI, el @OrdenMod.fecAviso.Value.Day/@OrdenMod.fecAviso.Value.Month/@OrdenMod.fecAviso.Value.Year</span>
+                                </div>
+                                
+                                if (OrdenMod.fecEntrega != null)
+                                {
+                                        <div class="form-group">
+                                            <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                                                <span class="base">Equipo Entregado:</span>
+                                                <span class="contenido"> SI, el @OrdenMod.fecEntrega.Value.Day/@OrdenMod.fecEntrega.Value.Month/@OrdenMod.fecEntrega.Value.Year</span>
+                                            </div>
+                                        </div>
+                                }
+                                else
+                                {
+                                        <div class="form-group">
+                                            <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                                                <span class="base">Equipo Entregado:</span>
+                                                <span class="contenido"> NO</span>
+                                            </div>
+                                        </div> 
+                                }
+                            }
+                            else
+                                if (OrdenMod.aviso == false && OrdenMod.idEstado != 1)
+                                { 
+                                    <div class="form-group">
+                                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                                            <span class="base">Aviso al Cliente:</span>
+                                            <span class="contenido"> NO</span>
+                                        </div>
+                                    </div>
+                                }
+                        </div>
+                    }
+            
+                    <div id="tareas" class="form-group">
+                        @if (canTareas == 0)
+                        {
+                            <div class="form-group">
+                                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                                    <span class="contenido">LA ORDEN AUN NO TIENE TRABAJOS</span>
+                                </div>
+                            </div>
+                        }
+                        else
+                            if (canTareas == 1)
+                            {
+                                <div class="form-group">
+                                    <div id="lblTrabajo" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                                        <span class="contenido">LA ORDEN TIENE 1 TRABAJO REALIZADO</span>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    <div id="lblTrabajo" class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                                        <span class="contenido">LA ORDEN TIENE @canTareas TRABAJOS REALIZADOS</span>
+                                    </div>
+                                </div>
+                            } 
+                    </div>
+
+                    @if (lsTareas != null)
+                    {                                                                                                                                                                                                                        
+                        <div id="tablaTrabajos">
+                            <table class="table table-striped table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>Detalles</th>
+                                        <th>Tecnico</th>
+                                        <th>Fec. Trabajo</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                @foreach (var tarea in lsTareas)
+                                {
+                                    <tr>
+                                        <td>@tarea.detalle</td>
+                                        <td>@tarea.tecnico</td>
+                                        <td>@tarea.fecDetalle.Day/@tarea.fecDetalle.Month/@tarea.fecDetalle.Year</td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </fieldset>
+            </form>
+        </div>
+    </div>
+}
+else
+{ Response.Redirect(Url.Action("Index", "Home")); }

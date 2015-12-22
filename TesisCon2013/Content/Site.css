@@ -1,0 +1,185 @@
+﻿
+
+/*----------------------------------------------------------*/
+/*COSAS GLOBALES*/
+*{text-align: center;}
+
+#msj
+{
+    background-color:#FF5C5C;
+    color:#FFFFFF;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:30px;
+    margin-bottom:15px;
+    width:60%;
+}
+
+.base
+{
+    font-family:Cambria Math;
+    text-decoration: underline;
+    font-size:17px;
+}
+
+.contenido
+{
+    font-family:Franklin Gothic Book;
+    font-size:16px;
+}
+
+/*INICIO DE SESION*/
+#frmInicio
+{
+    margin-top:50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.botonera
+{
+    margin-bottom:30px;
+    margin-top:15px;
+}
+
+/*VIENE DEL LAYOUT*/
+#divSesion
+{
+    margin-top:20px;
+    font-family:Berlin Sans FB;
+    font-size:18px;
+    margin-bottom:20px;
+}
+
+#divTabs
+{
+    margin-top:20px;
+    margin-bottom:30px;    
+}
+
+#divTabs li
+{
+    display: inline-block;
+    list-style-type: none;
+}
+
+@media (max-width: 767px){
+    ul {
+        margin: 0 auto;
+        display: table;
+        table-layout: auto;
+        float: none;
+    }
+    ul>li 
+    {
+        display: table-cell;
+        float: none;
+        text-align: center;
+        font-family:Segoe UI ;
+        font-size:14px;
+    }
+}
+@media (min-width: 768px){
+    ul {
+        margin: 0 auto;
+        display: table;
+        table-layout: auto;
+        float: none;
+    }
+    ul>li {
+        display: table-cell;
+        float: none;
+        text-align: center;
+        font-family:Segoe UI ;
+        font-size:16px;
+    }
+}
+@media (min-width: 992px){
+    ul {
+        margin: 0 auto;
+        display: table;
+        table-layout: auto;
+        float: none;
+    }
+    ul>li {
+        display: table-cell;
+        float: none;
+        text-align: center;
+        font-family:Segoe UI ;
+        font-size:16px;
+    }
+}
+@media (min-width: 1200px){
+    ul {
+        margin: 0 auto;
+        display: table;
+        table-layout: auto;
+        float: none;
+    }
+    ul>li {
+        display: table-cell;
+        float: none;
+        text-align: center;
+        font-family:Segoe UI ;
+        font-size:16px;
+    }
+}
+
+.navbar-nav>li {
+        float: none;
+}
+
+/*BIENVENIDA*/
+#bienvenida1
+{
+    margin-top:30px;
+    margin-bottom:15px;
+}
+
+#bienvenida2{margin-bottom:15px;}
+
+/*TABLAS*/
+.titulo
+{
+    display:none;
+    font-family:Berlin Sans FB;
+    font-size:24px;
+    margin-top:15px;
+    margin-bottom:15px;
+}
+
+table *
+{
+	border-collapse: collapse;
+	margin-left:auto; 
+    margin-right:auto;
+    text-align:center; 
+    vertical-align:middle;
+}
+
+/*CONSULTAR ORDEN DE TRABAJO*/
+#btnOcultar{display:none;}
+#lblImprimir{display:none;}
+#tablaTrabajos{display:none;}
+#divAvisos{display:none;}
+#btnVolver{display:none;}
+
+/*REGISTRAR NUEVO TRABAJO*/
+#fldFinal{display:none;}
+#txtTel1{width:40px;}
+
+/*FORMULARIO DE TIPOS Y MARCAS*/
+#frmBusqueda {display: block;}
+#frmRegistro {display: none;}
+
+/*OTRAS PROPIAS DEL CSS*/
+legend 
+{
+    font-size:1.2em;
+    font-weight: bold;
+}
+
+textarea 
+{
+    min-height: 75px;
+}

@@ -1,0 +1,173 @@
+﻿@{
+    ViewBag.Title = "Equipos | Modificar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var UsuarioLog = Session["UsuarioLog"] as TesisCon2013.Models.Usuarios;
+    var lstTiMa = Session["lstTiMa"] as List<TesisCon2013.Models.TipoMarca>;
+    var lstTipos = Session["lstTipos"] as List<TesisCon2013.Models.Tipos>;
+    var lstClientes = Session["lstClientes"] as List<TesisCon2013.Models.Clientes>;
+    var EquipoMod = Session["EquipoMod"] as TesisCon2013.Models.Equipos;
+    var ClienteMod = Session["ClienteMod"] as TesisCon2013.Models.Clientes;
+    var sirve = Session["sirve"] as int?;
+    var mensaje = TempData["mensaje"] as string;
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnBuscar").click(function () {
+            var buscar = $("#txtClie").val();
+            if (buscar != "") {
+                $.ajax({
+                    url: '@Url.Action("BuscarCliente", "Equipo")',
+                    type: 'POST',
+                    data: { "buscar": buscar },
+                    dataType: 'json',
+                    success: function (respuesta) {
+                        if (respuesta.result)
+                        { window.location = respuesta.url; }
+                        else
+                        { window.location = respuesta.url; }
+                    }
+                });
+            }
+            else {
+                $("#txtClie").empty();
+            }
+        });
+    });
+</script>
+
+@if (mensaje != null)
+{<div id="msj">@mensaje</div>}
+
+@if (EquipoMod != null && UsuarioLog != null && UsuarioLog.idRol == 2)
+{
+    <div class="container center_div">
+        <div class="row">
+            <form action="@Url.Action("ModificarEquipo", "Equipo")" method="post">
+                <fieldset>
+                    <legend class="col-md-6 col-md-offset-3">Modificar Equipo N° @EquipoMod.idEquipo</legend>
+        
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                Tipo|Marca
+                            </div>
+                            <select name="idTipoMarcaM" class="form-control" autofocus="autofocus">
+                                @foreach (var T in lstTipos)
+                                {
+                                    <optgroup label="@T.tipo.ToUpper()">
+                                        @foreach (var TM in lstTiMa)
+                                        {
+                                            if (T.idTipo == TM.idTipo)
+                                            {
+                                                if (T.idTipo == EquipoMod.TipoMarca.Tipos.idTipo)
+                                                {<option value="@TM.idTipoMarca" selected>@TM.Marcas.marca</option>}
+                                                else
+                                                {<option value="@TM.idTipoMarca">@TM.Marcas.marca</option>}
+                                            }
+                                        }
+                                    </optgroup>
+                                }
+                            </select>
+                            <span class="input-group-btn">
+                                <button type="button" onclick="location.href='@Url.Action("RegistrarRelacion", "TipoMarca")'" class="btn btn-primary" title="Registrar un nuevo Barrio"><span class="glyphicon glyphicon-plus"></span></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                Modelo
+                            </div>
+                            <input type="text" class="form-control" name="modeloM" value="@EquipoMod.modelo" maxlength="20" required="required" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                N° Serie
+                            </div>
+                            <input type="text" class="form-control" name="numSerieM" value="@EquipoMod.numSerie" maxlength="20" required="required" />
+                        </div>
+                    </div>
+
+                    @if (sirve == 0)
+                    {
+                        <div class="form-group">
+                            <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                                <div class="input-group-addon">
+                                    Cliente
+                                </div>
+                                <select name="idClienteM" class="form-control">
+                                    @foreach (var CL in lstClientes)
+                                    {
+                                        if (EquipoMod.idClie == CL.idClie)
+                                        {<option value="@CL.idClie" selected>@CL.apeClie, @CL.nomClie</option>}
+                                    }
+                                </select>
+                                <span class="input-group-btn">
+                                    <button type="button" onclick="location.href='@Url.Action("ModificarEquipo", Session["sirve"] = 1)'" class="btn btn-warning" title="Cambiar el Cliente(Dueño) del Equipo"><span class="glyphicon glyphicon-retweet"></span></button>
+                                </span>
+                            </div>
+                        </div>           
+                    }
+                    else
+                        if (sirve == 1)
+                        {
+                            <div class="form-group">
+                                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                                    <input type="text" id="txtClie" name="txtClie" class="form-control letras" placeholder="Buscar Cliente por Apellido o Nombre" />
+                                    <span class="input-group-btn">
+                                        <button type="button" id="btnBuscar" class="btn btn-info" title="Buscar Cliente por Nombre o Apellido"><span class="glyphicon glyphicon-search"></span></button>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                                    <div class="input-group-addon">
+                                        Cliente
+                                    </div>
+                                    <select name="idClienteM" class="form-control">
+                                        <option value="@ClienteMod.idClie" selected>@ClienteMod.apeClie, @ClienteMod.nomClie</option>
+                                    </select>
+                                    <span class="input-group-btn">
+                                        <button type="button" onclick="location.href='@Url.Action("ModificarEquipo", Session["sirve"] = 1)'" class="btn btn-warning" title="Cambiar el Cliente(Dueño) del Equipo"><span class="glyphicon glyphicon-retweet"></span></button>
+                                    </span>
+                                </div>
+                            </div>
+                        }
+                </fieldset>
+                        
+                @if (sirve != 1)
+                {
+                    <div class="form-group">
+                        <div class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                            <span class="contenido">Escriba su contraseña actual para confirmar</span>
+                        </div>
+                        <div class="col-xs-4 col-xs-offset-4 col-sm-2 col-sm-offset-5 col-md-2 col-md-offset-5 col-lg-2 col-lg-offset-5">
+                            <input type="password" class="form-control" name="confirm" onkeypress="return soloAlfaNum(event)" maxlength="10" required="required" />
+                        </div>
+                    </div>
+                }
+                
+                <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+                    <div class="btn-group botonera">
+                        @if (sirve != 1)
+                        {<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-saved"></span> Actualizar</button>}
+                        <button type="button" onclick="location.href='@Url.Action("ConsultarEquipo", new { ID = EquipoMod.idEquipo })'" class="btn btn-info" title="Volver al Listado de Clientes"><span class="glyphicon glyphicon-repeat"></span> Cancelar</button>
+                        <button type="button" onclick="location.href='@Url.Action("ListaEquipos")'" class="btn btn-info" title="Volver al Listado de Equipo"><span class="glyphicon glyphicon-refresh"></span> Listado</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{ Response.Redirect(Url.Action("Index", "Home")); }

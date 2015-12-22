@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "Administracion | Cambiar Clave";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var UsuarioLog = Session["UsuarioLog"] as TesisCon2013.Models.Usuarios;
+    var UsuarioMod = Session["UsuarioMod"] as TesisCon2013.Models.Usuarios;
+    var mensaje = TempData["mensaje"] as string;
+}
+
+@if (mensaje != null)
+{<div id="msj">@mensaje</div>}
+                     
+@if (UsuarioLog != null)
+{
+    <div class="container center_div">
+        <div class="row">
+            <form action="@Url.Action("CambiarClave", "Usuario")" method="post" class="form-horizontal" role="form">
+                <fieldset>
+                    <legend class="col-md-6 col-md-offset-3">Cambiar Contraseña del Usuario<br />N° @UsuarioMod.idUsu | @UsuarioMod.nomLog</legend>
+                    
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                Nueva<br /> Contraseña
+                            </div>
+                            <input type="password" class="form-control" name="newPass" maxlength="10" required="required" autofocus="autofocus" />
+                            <input type="password" class="form-control" name="newPass2" maxlength="10" required="required" />
+                        </div>
+                    </div>
+                </fieldset>
+
+                @if (UsuarioLog.idRol == 1 || UsuarioLog.idUsu == UsuarioMod.idUsu)
+                {
+                    <div class="form-group">
+                        <div class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                            <span class="contenido">Escriba su contraseña actual para confirmar</span>
+                        </div>
+                        <div class="col-xs-4 col-xs-offset-4 col-sm-2 col-sm-offset-5 col-md-2 col-md-offset-5 col-lg-2 col-lg-offset-5">
+                            <input type="password" class="form-control" name="confirm" onkeypress="return soloAlfaNum(event)" maxlength="10" required="required" />
+                        </div>
+                    </div>
+                }
+
+                <div class="col-md-4 col-md-offset-4 botonera">
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-saved"></span> Actualizar</button>
+                        @if (UsuarioLog.idUsu == UsuarioMod.idUsu)
+                        { <button type="button" onclick="location.href='@Url.Action("Index")'" class="btn btn-info" title="Volver al Area de Administracion"><span class="glyphicon glyphicon-repeat"></span> Cancelar</button> }
+                        else
+                            if (UsuarioLog.idRol == 1)
+                            { <button type="button" onclick="location.href='@Url.Action("ConsultarUsuario", new { ID = @UsuarioMod.idUsu})'" class="btn btn-info" title="Volver al Usuario"><span class="glyphicon glyphicon-repeat"></span> Cancelar</button> }
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{ Response.Redirect(Url.Action("Index", "Home")); }

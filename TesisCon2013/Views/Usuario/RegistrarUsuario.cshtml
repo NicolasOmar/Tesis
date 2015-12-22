@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "Usuarios | Registrar Usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var UsuarioLog = Session["UsuarioLog"] as TesisCon2013.Models.Usuarios;
+    var lstRoles = Session["lstRoles"] as List<TesisCon2013.Models.Roles>;
+    var lstBarrios = Session["lstBarrios"] as List<TesisCon2013.Models.Barrios>;    
+    var mensaje = TempData["mensaje"] as string;
+}
+
+@if (mensaje != null)
+{<div id="msj">@mensaje</div>}
+
+@if (UsuarioLog != null && UsuarioLog.idRol == 1)
+{ 
+    <div class="container center_div">
+        <div class="row">
+            <form action="@Url.Action("RegistrarUsuario", "Usuario")"  method="post" class="form-horizontal" role="form">
+                <fieldset>
+                    <legend class="col-md-6 col-md-offset-3">Datos Personales</legend>
+                    
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                Nombre
+                            </div>
+                            <input type="text" class="form-control letras" name="nomUsu" placeholder="Mauricio Ezequiel" maxlength="20" required="required" autofocus="true" />
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                Apellido
+                            </div>
+                            <input type="text" class="form-control letras" name="apeUsu" placeholder="Aviles Pardavila" maxlength="20" required="required" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                Direccion
+                            </div>
+                            <input type="text" class="form-control" name="direcUsu" maxlength="40" required="required" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                Barrio
+                            </div>
+                            <select name="idBarrio" class="form-control">
+                                @foreach (var barrio in lstBarrios)
+                                {
+                                    if (barrio.idBarrio > 1)
+                                    {<option value="@barrio.idBarrio" >@barrio.barrio</option> }
+                                }
+                            </select>
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("RegistrarBarrio", "Barrio")'" title="Registrar un nuevo Barrio"><span class="glyphicon glyphicon-plus"></span></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                Telefono
+                            </div>
+                            <input type="text" class="form-control" name="telUsu" maxlength="15" required="required" />
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend class="col-md-6 col-md-offset-3">Datos de Sesion</legend>
+                    
+                    <div class="form-group">
+                        <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                Usuario
+                            </div>
+                            <input type="text" class="form-control letras" name="nomLog" maxlength="10" required="required" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                Pass
+                            </div>
+                            <input type="password" class="form-control" name="passLog" maxlength="10" required="required" />
+                            <input type="password" class="form-control" name="passLog2" maxlength="10" required="required" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                Rol
+                            </div>
+                            <select name="idRol" class="form-control">
+                                @foreach (var rol in lstRoles)
+                                {
+                                    if (rol.idRol != 1)
+                                    {<option value="@rol.idRol" >@rol.rol</option> }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="form-group">
+                    <div class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                        <span class="contenido">Escriba su contraseña actual para confirmar</span>
+                    </div>
+                    <div class="col-xs-4 col-xs-offset-4 col-sm-2 col-sm-offset-5 col-md-2 col-md-offset-5 col-lg-2 col-lg-offset-5">
+                        <input type="password" class="form-control" name="confirm" onkeypress="return soloAlfaNum(event)" maxlength="10" required="required" />
+                    </div>
+                </div>
+
+                <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+                    <div class="btn-group botonera">
+                        <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Registrar</button>
+                        <button type="button" onclick="location.href='@Url.Action("ListaUsuarios", "Usuario")'" class="btn btn-info" title="Volver al listado de Usuarios"><span class="glyphicon glyphicon-repeat"></span> Volver</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{ Response.Redirect(Url.Action("Index", "Home")); }

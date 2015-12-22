@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "Administracion | Listado de Usuarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var UsuarioLog = Session["UsuarioLog"] as TesisCon2013.Models.Usuarios;
+    var lstUsuarios = Session["lstUsuarios"] as List<TesisCon2013.Models.UsuarioModel>;
+    var mensaje = TempData["mensaje"] as string;
+}
+
+@if (mensaje != null)
+{<div id="msj">@mensaje</div>}
+
+
+@if (lstUsuarios != null && lstUsuarios.Count != 0 && UsuarioLog != null && UsuarioLog.idRol < 3)
+{
+    <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+        <div class="btn-group botonera">
+            @if (UsuarioLog.idRol == 1)
+            {<button type="button" onclick="location.href='@Url.Action("RegistrarUsuario")'" class="btn btn-success" title="Registrar un nuevo Usuario"><span class="glyphicon glyphicon-plus"></span> Usuario</button>}
+                
+            <button type="button" onclick="location.href='@Url.Action("BuscarUsuarios")'" class="btn btn-info" title="Volver a la Busqueda de Usuarios"><span class="glyphicon glyphicon-search"></span> Buscar de Nuevo</button>
+            <button type="button" onclick="location.href='@Url.Action("Index", "Usuario")'" class="btn btn-primary" title="Volver al Area de Administracion"><span class="glyphicon glyphicon-repeat"></span> Administracion</button>
+        </div>
+    </div>
+    
+    <div id="imprimirTabla">
+        <table class="table table-hover table-responsive">
+            <thead>
+                <tr>
+                    <th>NOMBRE</th>
+                    <th>DIRECION</th>
+                    <th>BARRIO</th>
+                    <th>TELEFONO</th>
+                    @if (UsuarioLog.idRol == 1)
+                    {
+                        <th>USUARIO</th>
+                        <th>CONTRASEÑA</th>
+                        <th>ROL</th>
+                        <th>ESTADO</th>
+                    }
+                    <th>OPCIONES</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var usuario in lstUsuarios)
+                {
+                    <tr>
+                        <td>@usuario.nombre</td>
+                        <td>@usuario.direccion</td>
+
+                        @if (usuario.barrio.Equals("---"))
+                        {<td class="danger">@usuario.barrio</td>}
+                        else
+                        {<td>@usuario.barrio</td>}
+
+                        <td>@usuario.telefono</td>
+
+                        @if (UsuarioLog.idRol == 1)
+                        {
+                            <td>@usuario.logueo</td>
+                            <td>@usuario.password</td>
+                                    
+                            if (usuario.rol.Equals("Recepcionista"))
+                            {<td class="info">@usuario.rol</td>}
+                            else
+                                if (usuario.rol.Equals("Tecnico"))
+                                {<td class="success">@usuario.rol</td>}
+                                else
+                                    if (usuario.rol.Equals("Administrador"))
+                                    {<td class="danger">@usuario.rol</td>}
+
+                            if (usuario.habilitar)
+                            {<td class="success">Habilitado</td>}
+                            else
+                            {<td class="danger">Bloqueado</td>}
+                        }
+
+                        <td>
+                            @if (UsuarioLog.idRol < 3)
+                            {
+                                <div class="btn-group">
+                                    <button type="button" onclick="location.href='@Url.Action("ConsultarUsuario", new { ID = @usuario.ID })'" class="btn btn-info" title="Consultar Datos de Usuario"><span class="glyphicon glyphicon-search"></span></button>
+                                    @if (UsuarioLog.idRol == 1 && !UsuarioLog.Roles.rol.Equals(usuario.rol))
+                                    {
+                                        if (usuario.habilitar)
+                                        {<button type="button" onclick="location.href='@Url.Action("BloquearUsuario", new { ID = @usuario.ID })'" class="btn btn-warning" title="Bloquea el acceso del Usuario al Sistema"><span class="glyphicon glyphicon-lock"></span></button>}
+                                        else
+                                        {<button type="button" onclick="location.href='@Url.Action("HabilitarUsuario", new { ID = @usuario.ID })'" class="btn btn-warning" title="Devuelve el acceso al Usuario bloqueado al Sistema"><span class="glyphicon glyphicon-link"></span></button>}
+                                    }
+                                </div>
+                            }  
+                        </td>                     
+                    </tr> 
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    if (UsuarioLog.idRol == 3)
+    { Response.Redirect(Url.Action("Usuario", "BuscarUsuarios")); }
+    else
+    { Response.Redirect(Url.Action("Usuario", "Home")); } 
+}
+

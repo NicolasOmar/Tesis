@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "Clientes | Busqueda";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    var UsuarioLog = Session["UsuarioLog"] as TesisCon2013.Models.Usuarios;
+    var lstBarrios = Session["lstBarrios"] as List<TesisCon2013.Models.Barrios>;
+    var mensaje = TempData["mensaje"] as string;
+}
+
+@if (mensaje != null)
+{<div id="msj">@mensaje</div>}
+
+@if (UsuarioLog != null && UsuarioLog.idRol == 2)
+{
+    <div class="container center_div">
+        <div class="row">
+            <form action="@Url.Action("filtrarCliente", "Cliente")" method="get" class="form-horizontal" role="form">
+                <fieldset>
+                    <div class="row">
+                        <legend class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">Buscar Cliente por:</legend>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-4 col-xs-offset-4 col-sm-2 col-sm-offset-5 col-md-2 col-md-offset-5 col-lg-2 col-lg-offset-5 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-tag"></span> N°
+                            </div>
+                            <input type="text" class="form-control numerico" name="txtNumero" autofocus="true" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-italic"></span> Nombre
+                            </div>
+                            <input type="text" name="txtNom" class="form-control letras" maxlength="20" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-italic"></span> Apellido
+                            </div>
+                            <input type="text" name="txtApe" class="form-control letras" maxlength="20" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-home"></span> Direccion
+                            </div>
+                            <input type="text" name="txtDire" class="form-control" maxlength="40" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-map-marker"></span> Barrio
+                            </div>
+                            <select name="barrioFiltro" class="form-control">
+                                <option value="0"></option>
+                                @foreach (var barrio in lstBarrios)
+                                {<option value="@barrio.idBarrio"> @barrio.barrio</option>}
+                            </select>
+                        </div>
+                    </div>   
+                    
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-earphone"></span> Telefono
+                            </div>
+                            <input type="tel" maxlength="20" name="txtTel" class="form-control numerico" />            
+                        </div>
+                    </div>
+                </fieldset>
+    
+                <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+                    <div class="btn-group botonera">
+                        <button type="submit" class="btn btn-success" title="Buscar Clientes segun los valores ingresados"><span class="glyphicon glyphicon-search"></span> Buscar</button>
+                        <button type="button" onclick="location.href='@Url.Action("RegistrarCliente")'" class="btn btn-primary" title="Registrar un nuevo Cliente"><span class="glyphicon glyphicon-plus"></span> Cliente</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{ Response.Redirect(Url.Action("Index", "Home")); }

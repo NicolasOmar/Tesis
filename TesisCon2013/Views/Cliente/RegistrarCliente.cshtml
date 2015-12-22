@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "Clientes | Registro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    var UsuarioLog = Session["UsuarioLog"] as TesisCon2013.Models.Usuarios;
+    var lstBarrios = Session["lstBarrios"] as List<TesisCon2013.Models.Barrios>;
+    var interfaz = Session["interfaz"] as string;
+    var mensaje = TempData["mensaje"] as string;
+}
+
+@if (mensaje != null)
+{<div id="msj">@mensaje</div>}
+
+@if (UsuarioLog != null && UsuarioLog.idRol == 2)
+{
+    <div class="container center_div">
+        <div class="row">
+            <form action="@Url.Action("RegistrarCliente", "Cliente")" method="post" class="form-horizontal" role="form">
+                <fieldset>
+                    <legend class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">Registrar Cliente</legend>
+                    
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                Nombre
+                            </div>
+                            <input type="text" class="form-control letras" name="nomClie" placeholder="Mauricio Ezequiel" maxlength="20" required="required" autofocus="true" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                Apellido
+                            </div>
+                            <input type="text" class="form-control letras" name="apeClie" placeholder="Aviles Pardavila" maxlength="20" required="required"/>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                Direccion
+                            </div>
+                            <input type="text" class="form-control" name="direClie" placeholder="Felix Frias esq. 25 de Mayo" maxlength="40" required="required"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                Barrio
+                            </div>
+                            <select name="idBarrio" class="form-control">
+                                @foreach (var barrio in lstBarrios)
+                                {
+                                    if (barrio.idBarrio != 1)
+                                    {<option value="@barrio.idBarrio"> @barrio.barrio</option>}
+                                }
+                            </select>
+                            <span class="input-group-btn">
+                                <button type="button" onclick="location.href='@Url.Action("RegistrarBarrio", "Barrio")'" class="btn btn-primary" title="Registrar un nuevo Barrio"><span class="glyphicon glyphicon-plus"></span></button>
+                            </span>
+                        </div>
+                    </div>  
+                         
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                Telefono
+                            </div>
+                            <input type="tel" class="form-control" name="telClie" placeholder="351-156689874" maxlength="20" required="required"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                            <span class="contenido">Escriba su contraseña actual para confirmar</span>
+                        </div>
+                        <div class="col-xs-4 col-xs-offset-4 col-sm-2 col-sm-offset-5 col-md-2 col-md-offset-5 col-lg-2 col-lg-offset-5">
+                            <input type="password" class="form-control" name="confirm" onkeypress="return soloAlfaNum(event)" maxlength="10" required="required" />
+                        </div>
+                    </div>
+
+                </fieldset>
+                                
+
+                <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+                    <div class="btn-group botonera">
+                        <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Registrar</button>
+
+                        @if (interfaz != null && interfaz.Equals("regOrden"))
+                        {<button type="button" onclick="location.href='@Url.Action("RegistrarOrden", "Orden")'" class="btn btn-info" title="Volver al Registro de Ordenes"><span class="glyphicon glyphicon-repeat"></span> Volver</button>}
+                        else
+                            if (interfaz != null && interfaz.Equals("regEquipo"))
+                            {<button type="button" onclick="location.href='@Url.Action("RegistrarEquipo", "Equipo")'" class="btn btn-info" title="Volver al Registro de Equipos"><span class="glyphicon glyphicon-repeat"></span> Volver</button>}
+                            else
+                            {<button type="button" onclick="location.href='@Url.Action("Index")'" class="btn btn-info" title="Volver al Listado de Clientes"><span class="glyphicon glyphicon-repeat"></span> Volver</button>}
+                    </div>
+                </div>
+            </form> 
+        </div>
+    </div>
+}
+else
+{ Response.Redirect(Url.Action("Index", "Home")); }

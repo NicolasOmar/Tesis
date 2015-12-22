@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Ordenes | Listado de Ordenes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var UsuarioLog = Session["UsuarioLog"] as TesisCon2013.Models.Usuarios;
+    var lstOrdenes = Session["lstOrdenes"] as List<TesisCon2013.Models.OrdenModel>;
+    var mensaje = TempData["mensaje"] as string;
+}
+
+@if (mensaje != null)
+{<div id="msj">@mensaje</div>}
+
+@if (lstOrdenes != null && UsuarioLog != null && UsuarioLog.idRol > 1)
+{
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+            <div class="btn-group botonera">
+                @if (UsuarioLog.idRol == 2)
+                {<button type="button" onclick="location.href='@Url.Action("RegistrarOrden")'" class="btn btn-success" title="Registrar una nueva orden"><span class="glyphicon glyphicon-plus"></span> Orden</button>}
+                                                                                                                                         
+                <button type="button" onclick="location.href='@Url.Action("Index", "Orden")'" class="btn btn-info" title="Buscar de nuevo otras ordenes"><span class="glyphicon glyphicon-search"></span> Buscar de Nuevo</button>
+                <button type="button" id="btnI" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span> Imprimir</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="imprimirTabla">
+        <div class="titulo">Listado de Ordenes</div>
+
+        <table class="table table-hover table-responsive">
+            <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>CLIENTE</th>
+                    <th>EQUIPO</th>
+                    <th>FEC. ALTA</th>
+                    <th>ESTADO</th>
+                    <th>AVISO AL CLIENTE</th>
+                    <th>EQUIPO ENTREGADO</th>
+                    <th class="ocultar">OPCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var orden in lstOrdenes)
+                {
+                    <tr>
+                        <td>@orden.ID</td>
+                        <td>@orden.cliente</td>
+                        <td>@orden.equipo</td>
+                        <td>@orden.fecRecibido.Day/@orden.fecRecibido.Month/@orden.fecRecibido.Year</td>
+                        @if (orden.estado.Equals("En Reparacion"))
+                        {<td class="warning">@orden.estado</td>}
+                        else
+                            if (orden.estado.Equals("Reparada"))
+                            {<td class="success">@orden.estado</td>}
+                            else
+                                if (orden.estado.Equals("Sin Solucion"))
+                                {<td class="danger">@orden.estado</td>}
+                                                               
+                        @if (!orden.aviso && orden.estado.Equals("En Reparacion"))
+                        {<td>---</td>}
+                        else
+                            if (orden.aviso)
+                            {<td class="success">SI - @orden.fecAviso.Value.Day/@orden.fecAviso.Value.Month/@orden.fecAviso.Value.Year</td> }
+                            else
+                            { <td class="danger">NO</td> }
+
+                        @if (orden.fecEntregado == null)
+                        { <td>---</td> }
+                        else
+                            if (orden.aviso != null && orden.fecEntregado == null)
+                            { <td class="danger">NO</td> }
+                            else
+                            { <td class="success">SI - @orden.fecEntregado.Value.Day/@orden.fecEntregado.Value.Month/@orden.fecEntregado.Value.Year</td> }
+                        <td class="ocultar">
+                            <button type="button" onclick="location.href='@Url.Action("ConsultarOrden", new { ID = @orden.ID })'" class="btn btn-info" title="Consultar los datos de la orden"><span class="glyphicon glyphicon-search"></span></button>
+                        </td>
+                    </tr>
+                
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{ Response.Redirect(Url.Action("Index", "Home")); }
+
+

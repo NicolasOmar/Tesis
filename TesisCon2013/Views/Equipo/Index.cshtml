@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "Equipos | Busqueda";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var UsuarioLog = Session["UsuarioLog"] as TesisCon2013.Models.Usuarios;
+    var lstTipos = Session["lstTipos"] as List<TesisCon2013.Models.Tipos>;
+    var lstTiMa = Session["lstTiMa"] as List<TesisCon2013.Models.TipoMarca>;
+    var lstClientes = Session["lstClientes"] as List<TesisCon2013.Models.Clientes>;
+    var mensaje = TempData["mensaje"] as string;
+}
+
+@if (mensaje != null)
+{<div id="msj">@mensaje</div>}
+
+@if(UsuarioLog != null && UsuarioLog.idRol == 2)
+{
+    <div class="container center_div">
+        <div class="row">
+            <form action="@Url.Action("FiltrarEquipo", "Equipo")" method="get">
+                <fieldset>
+                    <div class="row">
+                        <legend class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">Buscar Equipo por:</legend>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-4 col-xs-offset-4 col-sm-2 col-sm-offset-5 col-md-2 col-md-offset-5 col-lg-2 col-lg-offset-5 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-tag"></span> N°
+                            </div>
+                            <input type="text" class="form-control numerico" name="txtNumero" autofocus="true" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-tasks"></span> Tipo|Marca
+                            </div>
+                            <select name="idTipoMarca" class="form-control">
+                                    <option value="0"></option>
+                                    @foreach (var T in lstTipos)
+                                    {
+                                        <optgroup label="@T.tipo.ToUpper()">
+                                        {
+                                            @foreach (var TM in lstTiMa)
+                                            {
+                                                if (T.idTipo == TM.idTipo)
+                                                {<option value="@TM.idTipoMarca">@TM.Marcas.marca</option>}
+                                        }
+                                        </optgroup>
+                                    }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-list"></span> Modelo
+                            </div>
+                            <input type="text" name="txtModelo" class="form-control" maxlength="20" />
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-barcode"></span> N° Serie
+                            </div>
+                            <input type="text" name="txtSerie" class="form-control" maxlength="20" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-user"></span> Cliente
+                            </div>
+                            <input type="text" name="txtCliente" placeholder="Busque por Nombre o Apellido" class="form-control letras" maxlength="20" />
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+                    <div class="btn-group botonera">
+                        <button type="submit" class="btn btn-success"title="Buscar Clientes segun los valores ingresados"><span class="glyphicon glyphicon-search"></span> Buscar</button>
+                        <button type="button" onclick="location.href='@Url.Action("RegistrarEquipo")'" class="btn btn-primary" title="Registrar un nuevo Equipo"><span class="glyphicon glyphicon-plus"></span> Equipo</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{ Response.Redirect(Url.Action("Index", "Home")); }

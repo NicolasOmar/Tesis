@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "Clientes | Listado";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    var UsuarioLog = Session["UsuarioLog"] as TesisCon2013.Models.Usuarios;
+    var lstClientes = Session["lstClientes"] as List<TesisCon2013.Models.ClienteModel>;
+    var mensaje = TempData["mensaje"] as string;
+    var interfaz = Session["interfaz"] as string;
+}
+
+@if (mensaje != null)
+{<div id="msj">@mensaje</div>}
+
+@if (lstClientes != null && UsuarioLog != null && UsuarioLog.idRol > 1)
+{
+    if (interfaz == null)
+    {
+        <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+            <div class="btn-group botonera">
+                <button type="button" onclick="location.href='@Url.Action("RegistrarCliente")'" class="btn btn-success" title="Registrar un nuevo Cliente"><span class="glyphicon glyphicon-plus"></span> Cliente</button>
+                <button type="button" onclick="location.href='@Url.Action("Index")'" class="btn btn-info" title="Buscar uno o varios Clientes"><span class="glyphicon glyphicon-search"></span> Buscar de Nuevo</button>
+                <button type="button" id="btnI" class="btn btn-primary"><span class="glyphicon glyphicon-print"></span> Imprimir</button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 botonera">
+            @if (interfaz.Equals("consuOrden"))
+            {<button type="button" onclick="location.href='@Url.Action("Index","Orden")'" class="btn btn-warning" title="Volver a la Busqueda de Ordenes"><span class="glyphicon glyphicon-repeat"></span> Volver</button>}
+            else
+                if (interfaz.Equals("regOrden"))
+                {<button type="button" onclick="location.href='@Url.Action("RegistrarOrden","Orden")'" class="btn btn-warning" title="Volver al Registro de Orden"><span class="glyphicon glyphicon-repeat"></span> Volver</button>}
+                else
+                    if (interfaz.Equals("regOrden"))
+                    {<button type="button" onclick="location.href='@Url.Action("RegistrarEquipo", "Equipo")'" class="btn btn-warning" title="Volver al Registro del Equipo"><span class="glyphicon glyphicon-repeat"></span> Volver</button>}
+                    else
+                    {<button type="button" onclick="location.href='@Url.Action("ModificarEquipo", "Equipo")'" class="btn btn-warning" title="Volver al Equipo a Modificar"><span class="glyphicon glyphicon-repeat"></span> Volver</button>}
+        </div>
+                                                                                                                                                                                                            
+    }
+    
+    <div id="imprimirTabla">
+        <div class="titulo">Listado de Clientes</div>
+
+        <table class="table table-hover table-responsive">
+            <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>NOMBRE</th>
+                    <th>DIRECCION</th>
+                    <th>BARRIO</th>
+                    <th>TELEFONO</th>
+                    <th class="ocultar">OPCIONES</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var Cliente in lstClientes)
+                {
+                    <tr>
+                        <td>@Cliente.ID</td>
+                        <td>@Cliente.apellido, @Cliente.nombre</td>
+                        <td>@Cliente.direccion</td>
+                                
+                        @if (Cliente.barrio.Equals("---"))
+                        {<td class="danger">@Cliente.barrio</td>}
+                        else
+                        {<td>@Cliente.barrio</td>}
+                                                      
+                        <td>@Cliente.telefono</td>
+                        <td class="ocultar">
+                            @if (interfaz != null)
+                            {
+                                if (interfaz.Equals("regOrden") || interfaz.Equals("consuOrden"))
+                                {<button type="button" onclick="location.href='@Url.Action("SeleccionarCliente", "Orden", new { ID = @Cliente.ID })'" class="btn btn-info" title="Seleccionar el cliente para registrar la nueva Orden"><span class="glyphicon glyphicon-paperclip"></span></button>}
+                                else
+                                {<button type="button" onclick="location.href='@Url.Action("SeleccionarCliente", "Equipo", new { ID = @Cliente.ID })'" class="btn btn-info" title="Seleccionar el cliente para registrar el nuevo Equipo"><span class="glyphicon glyphicon-paperclip"></span></button>}
+                            }
+                            else
+                            {<button type="button" onclick="location.href='@Url.Action("ConsultarCliente", new { ID = @Cliente.ID })'" class="btn btn-info" title="Consultar Datos del Cliente"><span class="glyphicon glyphicon-user"></span></button>}
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{ Response.Redirect(Url.Action("Index", "Home")); }
+

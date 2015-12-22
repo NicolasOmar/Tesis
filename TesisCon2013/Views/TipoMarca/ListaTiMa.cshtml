@@ -1,0 +1,120 @@
+﻿@{
+    ViewBag.Title = "Administracion | Listado de Tipos y Marcas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var UsuarioLog = Session["UsuarioLog"] as TesisCon2013.Models.Usuarios;
+    var lstTiMa = Session["lstTiMa"] as List<TesisCon2013.Models.TipoMarca>;
+    var TiMaMod = Session["TiMaMod"] as TesisCon2013.Models.TipoMarca;
+    var filtrado = Session["filtrado"] as int?;    
+    var mensaje = TempData["mensaje"] as string;
+    var objeto = lstTiMa.ElementAt(0);
+}
+
+@if (mensaje != null)
+{<div id="msj">@mensaje</div>}
+                             
+@if (UsuarioLog != null && UsuarioLog.idRol == 1)
+{
+    <div class="row">
+    @if (lstTiMa != null && UsuarioLog != null && UsuarioLog.idRol == 1)
+    {
+        
+        if (filtrado == 1)
+        {                                                                                                                                       
+            <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+                <div class="btn-group botonera">
+                    <button type="button" onclick="location.href='@Url.Action("Index", "TipoMarca")'" class="btn btn-info" title="Buscar relaciones entre tipos y marcas"><span class="glyphicon glyphicon-search"></span> Buscar de Nuevo</button>
+                    <button type="button" onclick="location.href='@Url.Action("RegistrarMarca")'" class="btn btn-success" title="Registrar una nueva Marca"><span class="glyphicon glyphicon-plus"></span> Marca</button>
+                    <button type="button" onclick="location.href='@Url.Action("RegistrarRelacion")'" class="btn btn-primary" title="Registrar una nueva Relacion Tipo|Marca"><span class="glyphicon glyphicon-plus"></span> Relacion Tipo/Marca</button>
+                </div>
+            </div>
+                                                                                                                                                
+            <div class="container">
+                <table class="table table-hover table-responsive">
+                    <thead>
+                        <tr>
+                            <th>MARCA</th>
+                            <th>OPCIONES</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var tipoMarca in lstTiMa)
+                        {
+                            <tr>
+                                @if (tipoMarca.idMarca > 1)
+                                {
+                                    <td>@tipoMarca.Marcas.marca</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" onclick="location.href='@Url.Action("ModificarMarca", new { ID = @tipoMarca.idMarca })'" class="btn btn-warning" title="Modificar datos de una marca"><span class="glyphicon glyphicon-pencil"></span></button>
+                                            <button type="button" onclick="location.href='@Url.Action("EliminarMarca", new { ID = @tipoMarca.idMarca })'" class="btn btn-danger" title="Eliminar Marca"><span class="glyphicon glyphicon-trash"></span></button>
+                                        </div>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+            if (filtrado == 2)
+            {
+                <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+                    <div class="btn-group botonera">
+                        <button type="button" onclick="location.href='@Url.Action("Index", "TipoMarca")'" class="btn btn-info" title="Buscar relaciones entre tipos y marcas"><span class="glyphicon glyphicon-search"></span> Buscar de Nuevo</button>
+                        <button type="button" onclick="location.href='@Url.Action("RegistrarTipo")'" class="btn btn-success" title="Registrar un nuevo Tipo"><span class="glyphicon glyphicon-plus"></span> Tipo</button>
+                        <button type="button" onclick="location.href='@Url.Action("RegistrarRelacion")'" class="btn btn-primary" title="Registrar una nueva Relacion Tipo|Marca"><span class="glyphicon glyphicon-plus"></span> Relacion Tipo/Marca</button>
+                    </div>
+                </div>
+                                                                                                                     
+                <div id="imprimirTabla" class="container">
+                    <table class="table table-hover table-responsive"> 
+                        <thead>
+                            <tr>
+                                <th>TIPO</th>
+                                <th>OPCIONES</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var tipoMarca in lstTiMa)
+                            {
+                                <tr>
+                                    @if (tipoMarca.idMarca > 1)
+                                    {
+                                        <td>@tipoMarca.Tipos.tipo</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" onclick="location.href='@Url.Action("ModificarTipo", new { ID = @tipoMarca.idTipo })'" class="btn btn-warning" title="Modificar datos de un tipo"><span class="glyphicon glyphicon-pencil"></span></button>
+                                                <button type="button" onclick="location.href='@Url.Action("EliminarTipo", new { ID = @tipoMarca.idTipo })'" class="btn btn-danger" title="Eliminar Tipo de Equipo"><span class="glyphicon glyphicon-trash"></span></button>
+                                            </div>
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+                if (filtrado == 3)
+                {
+                    <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+                        <div class="btn-group botonera">
+                            <button type="button" onclick="location.href='@Url.Action("Index", "TipoMarca")'" class="btn btn-info" title="Buscar relaciones entre tipos y marcas"><span class="glyphicon glyphicon-search"></span> Buscar de Nuevo</button>
+                            <button type="button" onclick="location.href='@Url.Action("RegistrarRelacion")'" class="btn btn-primary" title="Registrar una nueva Relacion Tipo|Marca"><span class="glyphicon glyphicon-plus"></span> Relacion Tipo/Marca</button>
+                            @if(TiMaMod != null)
+                            {<button type="button" onclick="location.href='@Url.Action("EliminarRelacion", new { ID = @TiMaMod.idTipoMarca })'" class="btn btn-danger" title="Eliminar Relacion Tipo|Marca"><span class="glyphicon glyphicon-trash"></span> Eliminar Relacion</button>}
+                        </div>
+                    </div>
+                }
+                else
+                { Response.Redirect(Url.Action("Index")); }
+    }    
+    </div>
+}
+else
+{ Response.Redirect(Url.Action("Index", "Home")); }
+

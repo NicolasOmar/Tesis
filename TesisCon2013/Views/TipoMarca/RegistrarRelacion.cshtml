@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "Registrar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var UsuarioLog = Session["UsuarioLog"] as TesisCon2013.Models.Usuarios;
+    var lstTipos = Session["lstTipos"] as List<TesisCon2013.Models.Tipos>;
+    var lstMarcas = Session["lstMarcas"] as List<TesisCon2013.Models.Marcas>;
+    var interfaz = Session["interfaz"] as string;
+    var mensaje = TempData["mensaje"] as string;
+}
+
+@if (mensaje != null)
+{<div id="msj">@mensaje</div>}
+
+@if (UsuarioLog != null && UsuarioLog.idRol < 3)
+{
+    <div class="container center_div">
+        <div class="row">
+            <form action="@Url.Action("RegistrarRelacion")" method="post" class="form-horizontal" role="form">
+                <fieldset>
+                    <legend class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">Registrar Relaciones Tipos/Marcas</legend>
+
+                    <div class="form-group">
+                        <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                Tipo
+                            </div>
+                            <select name="idTipo" class="form-control" autofocus="autofocus">
+                                <option value="0"></option>
+                                @foreach (var tipo in lstTipos)
+                                {<option value="@tipo.idTipo"> @tipo.tipo</option>}
+                            </select>
+                            <span class="input-group-btn">
+                                <button type="button" onclick="location.href='@Url.Action("RegistrarTipo")'" class="btn btn-primary" title="Registrar Nuevo Tipo"><span class="glyphicon glyphicon-plus"></span></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                            <div class="input-group-addon">
+                                Marca
+                            </div>
+                            <select name="idMarca" class="form-control">
+                                <option value="0"></option>
+                                @foreach (var marca in lstMarcas)
+                                {
+                                    if (marca.idMarca > 1)
+                                    {<option value="@marca.idMarca"> @marca.marca</option>}
+                                }
+                            </select>
+                            <span class="input-group-btn">
+                                <button type="button" onclick="location.href='@Url.Action("RegistrarMarca")'" class="btn btn-primary" title="Registrar Nueva Marca"><span class="glyphicon glyphicon-plus"></span></button>
+                            </span>
+                        </div>
+                    </div>
+                </fieldset>
+        
+                <div class="form-group">
+                    <div class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                        <span class="contenido">Escriba su contraseña actual para confirmar</span>
+                    </div>
+                    <div class="col-xs-4 col-xs-offset-4 col-sm-2 col-sm-offset-5 col-md-2 col-md-offset-5 col-lg-2 col-lg-offset-5">
+                        <input type="password" class="form-control" name="confirm" onkeypress="return soloAlfaNum(event)" maxlength="10" required="required" />
+                    </div>
+                </div>
+
+                <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+                    <div class="btn-group botonera"> 
+                        <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-floppy-saved"></span> Confirmar</button>
+                        @if (interfaz != null && interfaz.Equals("regOrden") || interfaz != null && interfaz.Equals("regEquipo"))
+                        {<button type="button" onclick="location.href='@Url.Action("RegistrarEquipo", "Equipo")'" class="btn btn-info" title="Volver al Registro del Equipo"><span class="glyphicon glyphicon-repeat"></span> Volver</button>}
+                        else
+                            if (interfaz != null && interfaz.Equals("modEquipo"))
+                            {<button type="button" onclick="location.href='@Url.Action("ModificarEquipo", "Equipo")'" class="btn btn-info" title="Volver al Equipo a Modificar"><span class="glyphicon glyphicon-repeat"></span> Volver</button>}
+                            else
+                            {<button type="button" onclick="location.href='@Url.Action("Index", "TipoMarca")'" class="btn btn-info" title="Volver al listado de Tipos|Marcas"><span class="glyphicon glyphicon-repeat"></span> Volver</button>}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{ Response.Redirect(Url.Action("Index", "Home")); }

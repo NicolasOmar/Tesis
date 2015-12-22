@@ -1,0 +1,129 @@
+﻿@{
+    ViewBag.Title = "Ordenes | Registro de Orden";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var UsuarioLog = Session["UsuarioLog"] as TesisCon2013.Models.Usuarios;
+    var ClienteMod = Session["ClienteMod"] as TesisCon2013.Models.Clientes;
+    var lstClientes = Session["lstClientes"] as List<TesisCon2013.Models.Clientes>;
+    var lstEquipos = Session["lstEquipos"] as List<TesisCon2013.Models.Equipos>;
+    var mensaje = TempData["mensaje"] as string;
+    var sirve = Session["sirve"] as bool?;
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnBuscar").click(function () {
+            var buscar = $("#txtClie").val();
+            if (buscar != "") {
+                $.ajax({
+                    url: '@Url.Action("BuscarCliente", "Orden")',
+                    type: 'POST',
+                    data: { "buscar": buscar },
+                    dataType: 'json',
+                    success: function (respuesta) {
+                        if (respuesta.result)
+                        { window.location = respuesta.url; }
+                        else
+                        { window.location = respuesta.url; }
+                    }
+                });
+            }
+            else {
+                $("#txtClie").empty();
+            }
+        });        
+    });
+</script>
+           
+@if (mensaje != null)
+{<div id="msj">@mensaje</div>}
+
+@if (UsuarioLog != null && UsuarioLog.idRol == 2)
+{
+    <div class="container center_div">
+        <div class="row">
+            <form action="@Url.Action("RegistrarOrden")" method="post" class="form-horizontal" role="form">
+                <fieldset>
+                    <legend class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">Registrar Orden</legend>
+                 
+                        @if (sirve != null && sirve == true && ClienteMod != null)
+                        {
+                            <div class="form-group">
+                                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                                    <div class="input-group-addon">Cliente</div>
+                                    <input type="text" class="form-control" value="@ClienteMod.apeClie, @ClienteMod.nomClie" readonly="readonly" />
+                                    <span class="input-group-btn">
+                                        <button type="button" onclick="location.href='@Url.Action("RegistrarOrden", Session["sirve"] = null)'" class="btn btn-warning" title="Buscar otro Cliente"><span class="glyphicon glyphicon-repeat"></span></button>
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 input-group">
+                                    <div class="input-group-addon">
+                                        Equipo
+                                    </div>
+                                    <select name="idEquipo" class="form-control" autofocus>
+                                        <option value="0"></option>
+                                        @foreach (var EQ in lstEquipos)
+                                        {<option value="@EQ.idEquipo">@EQ.idEquipo | @EQ.TipoMarca.Tipos.tipo @EQ.TipoMarca.Marcas.marca | @EQ.modelo | @EQ.numSerie</option>}
+                                    </select>
+                                    <span class="input-group-btn">
+                                        <button type="button" onclick="location.href='@Url.Action("RegistrarEquipo", "Equipo")'" class="btn btn-primary" title="Registrar Nuevo Equipo"><span class="glyphicon glyphicon-plus"></span></button>
+                                    </span>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="form-group">
+                                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 input-group">
+                                    <input type="text" id="txtClie" name="txtClie" class="form-control letras" placeholder="Buscar Cliente por Apellido o Nombre" autofocus="true" />
+                                    <span class="input-group-btn">
+                                        <button type="button" id="btnBuscar" class="btn btn-info" title="Buscar Cliente por Nombre o Apellido"><span class="glyphicon glyphicon-search"></span></button>
+                                        <button type="button" onclick="location.href='@Url.Action("RegistrarCliente", "Cliente")'" class="btn btn-primary" title="Registrar Nuevo Cliente"><span class="glyphicon glyphicon-plus"></span></button>
+                                    </span>
+                                </div>
+                            </div>
+                        }
+
+                    <div class="form-group">
+                        <div class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                            <span class="base">Falla/s</span>
+                        </div>
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 input-group">
+                            <textarea class="form-control" rows="4" cols="50" name="falla" placeholder="Ejemplos: No inicia el windows. No funciona internet. Lentitud. No enciende" maxlength="150" required="required"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                            <span class="base">Observacion/es</span>
+                        </div>
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 input-group">
+                            <textarea class="form-control" rows="4" cols="50" name="observ" placeholder="Deja cargador? Tiene daños en la carcasa? Alguna otra informacion que nos pueda dar el cliente?" maxlength="150" required="required"></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="form-group">
+                    <div class="col-xs-6 col-xs-offset-3 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                        <span class="contenido">Escriba su contraseña actual para confirmar</span>
+                    </div>
+                    <div class="col-xs-4 col-xs-offset-4 col-sm-2 col-sm-offset-5 col-md-2 col-md-offset-5 col-lg-2 col-lg-offset-5">
+                        <input type="password" class="form-control" name="confirm" onkeypress="return soloAlfaNum(event)" maxlength="10" required="required" />
+                    </div>
+                </div>
+
+                <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+                    <div class="btn-group botonera">
+                        <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Registrar</button>
+                        <button type="button" onclick="location.href='@Url.Action("Index")'" class="btn btn-warning" title="Volver al listado de Ordenes"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{ Response.Redirect(Url.Action("Index", "Home")); }
